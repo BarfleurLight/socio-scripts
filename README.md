@@ -11,6 +11,6 @@ This repository contains various scripts for automating driver installations, ap
 Install PCL 6 printer driver for Linux (Ubuntu, Debian), version 1.18
 
 ```
-bash -c "$(curl -L https://github.com/BarfleurLight/socio-scripts/driver-sharp-mx266n/install.sh)" @ install
+bash -c "$(curl -L https://github.com/BarfleurLight/socio-scripts/raw/main/driver-sharp-mx266n/install.sh)" @ install
 ```
 
