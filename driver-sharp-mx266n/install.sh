@@ -24,6 +24,29 @@ check_if_running_as_root() {
   fi
 }
 
+download_files() {
+  local download_count=0
+
+  for relative_path in "${!FILES[@]}"; do
+    local full_path="${FILES[$relative_path]}$relative_path"
+    local target_dir=$(dirname "$full_path")
+    mkdir -p "$target_dir"
+
+    if curl -fsS -o "$full_path" "${BASE_LINK}$relative_path"; then
+      ((download_count++))
+    else
+      echo "error: Failed to download $relative_path"
+      return 1
+    fi
+  done
+
+  if ((download_count == 5)); then
+    echo 'info: files download'
+  fi
+
+  return 0
+}
+
 remove_driver() {
 
   delete_files=()
