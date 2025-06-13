@@ -67,7 +67,7 @@ main() {
 
   check_if_running_as_root || return 1
 
-  case "$2" in
+  case "$1" in
     "install")
       download_files || remove_driver
       ;;
@@ -75,7 +75,7 @@ main() {
       remove_driver
       ;;
     *)
-      echo "error: invalid argument $2"
+      echo "error: invalid argument $1"
       return 1
       ;;
   esac
