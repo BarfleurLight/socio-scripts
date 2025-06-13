@@ -64,8 +64,22 @@ remove_driver() {
 }
 
 main() { 
+
   check_if_running_as_root || return 1
 
+  case "$2" in
+    "install")
+      download_files || remove_driver
+      ;;
+    "remove")
+      remove_driver
+      ;;
+    *)
+      echo "error: invalid argument $2"
+      return 1
+      ;;
+  esac
+  
 }
 
 main "$@"
