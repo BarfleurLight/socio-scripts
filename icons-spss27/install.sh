@@ -2,7 +2,14 @@
 
 
 DOWNLOAD_LINK="https://scripts.obrishti.ru/icons-spss-27/spss-icons.zip"
-SPSS_DIR="/opt/IBM/SPSS/Statistics/27/"
+SPSS_DIR="/opt/IBM/SPSS/Statistics/27"
+declare -A FILES=(
+  ["lservrc"]="$SPSS_DIR/bin/"
+  ["desktop-icon.svg"]="$SPSS_DIR/"
+  ["SPSS.desktop"]="/usr/share/applications/"
+  ["x-spss-sps.xml"]="/usr/share/mime/packages/"
+  ["x-spss-spv.xml"]="/usr/share/mime/packages/"
+)
 
 curl() {
   $(type -P curl) -L -q --retry 5 --retry-delay 10 --retry-max-time 60 "$@"
@@ -53,12 +60,38 @@ download_and_unzip() {
   fi
 }
 
-install_icons() {
-  :
+install_files() {
+
+  for size in 16x16 32x32; do
+    for file in "$TMP_DIRECTORY/$size/*"; do
+      install -Dm 644 "$file" "/usr/share/icons/hicolor/$size/mimetypes/$(basename "$file")" || return 1
+    done
+  done
+
+
+  for src in "${!FILES[@]}"; do
+    install -Dm 644 "$TMP_DIRECTORY/$src" "${FILES[$src]}/$src" || return 1
+  done
+
+  update-mime-database /usr/share/mime || return 1
+  update-icon-caches /usr/share/icons/* || return 1
+
 }
 
 remove_files() {
-  :
+  delete_files=("$TMP_DIRECTORY")
+
+  for src in "${!FILES[@]}"; do
+    delete_files+=("${FILES[$src]}$src")
+  done
+
+  if ! rm -rf "${delete_files[@]}"; then
+    echo 'error: Files not exist.'
+    exit 1
+  fi
+
+  echo "info: All failes remove"
+  exit 0
 }
 
 main() { 
@@ -71,11 +104,10 @@ main() {
   ZIP_FILE="${TMP_DIRECTORY}/spss-icons.zip"
 
   download_and_unzip || remove_files
+  install_files || remove_files
 
-  
+  rm -r "$TMP_DIRECTORY"
 
-
-  
 }
 
 main "$@"
