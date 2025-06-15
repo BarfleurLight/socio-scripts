@@ -40,7 +40,7 @@ select_parameters() {
       return 0
       ;;
     "remove")
-      remove_icons
+      remove_files
       ;;
     *)
       echo "error: invalid argument $1"
