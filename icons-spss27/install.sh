@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
-
 DOWNLOAD_LINK="https://scripts.obrishti.ru/icons-spss-27/spss-icons.zip"
+
 SPSS_DIR="/opt/IBM/SPSS/Statistics/27"
+
 declare -A FILES=(
   ["lservrc"]="$SPSS_DIR/bin/"
   ["desktop-icon.svg"]="$SPSS_DIR/"
@@ -61,21 +62,15 @@ download_and_unzip() {
 }
 
 install_files() {
-
   for size in 16x16 32x32; do
     for file in "$TMP_DIRECTORY/$size"/*; do
       install -Dm 644 "$file" "/usr/share/icons/hicolor/$size/mimetypes/$(basename "$file")" || return 1
     done
   done
 
-
   for src in "${!FILES[@]}"; do
     install -Dm 644 "$TMP_DIRECTORY/$src" "${FILES[$src]}/$src" || return 1
   done
-
-  update-mime-database /usr/share/mime || return 1
-  command -v update-icon-caches && update-icon-caches /usr/share/icons/*
-
 }
 
 remove_files() {
@@ -95,7 +90,6 @@ remove_files() {
 }
 
 main() { 
-
   check_if_running_as_root || return 1
   select_parameters "$@" || return 1
   check_install_spss || return 1
@@ -106,9 +100,15 @@ main() {
   download_and_unzip || remove_files
   install_files || remove_files
 
+  update-mime-database /usr/share/mime ||
+  echo "error: Update mime"
+ 
+  update-icon-caches /usr/share/icons/hicolor ||
+  gtk-update-icon-cache /usr/share/icons/hicolor ||
+  echo "error: Update icons cache"
+ 
   echo "Icons installed"
-  echo "Run: sudo /opt/IBM/SPSS/Statistics/27/open.sh"
-
+  echo "To activate, run: sudo /opt/IBM/SPSS/Statistics/27/open.sh"
 }
 
 main "$@"
