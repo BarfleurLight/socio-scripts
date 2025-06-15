@@ -74,7 +74,7 @@ install_files() {
   done
 
   update-mime-database /usr/share/mime || return 1
-  update-icon-caches /usr/share/icons/* || return 1
+  command -v update-icon-caches && update-icon-caches /usr/share/icons/*
 
 }
 
@@ -105,6 +105,9 @@ main() {
 
   download_and_unzip || remove_files
   install_files || remove_files
+
+  echo "Icons installed"
+  echo "Run: sudo /opt/IBM/SPSS/Statistics/27/open.sh"
 
 }
 
