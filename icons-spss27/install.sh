@@ -63,7 +63,7 @@ download_and_unzip() {
 install_files() {
 
   for size in 16x16 32x32; do
-    for file in "$TMP_DIRECTORY/$size/*"; do
+    for file in "$TMP_DIRECTORY/$size"/*; do
       install -Dm 644 "$file" "/usr/share/icons/hicolor/$size/mimetypes/$(basename "$file")" || return 1
     done
   done
@@ -105,8 +105,6 @@ main() {
 
   download_and_unzip || remove_files
   install_files || remove_files
-
-  rm -r "$TMP_DIRECTORY"
 
 }
 
