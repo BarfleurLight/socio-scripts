@@ -14,3 +14,11 @@ Install PCL 6 printer driver for Linux (Ubuntu, Debian), version 1.18
 bash -c "$(curl -L https://github.com/BarfleurLight/socio-scripts/raw/main/driver-sharp-mx266n/install.sh)" @ install
 ```
 
+#### Activate and create icons for SPSS 27
+
+Activation and installation of icons for SPSS 27. Start after install program.
+
+```
+bash -c "$(curl -LsS https://github.com/BarfleurLight/socio-scripts/raw/main/icons-spss27/install.sh)" @ install
+```
+
