@@ -24,6 +24,22 @@ check_if_running_as_root() {
   fi
 }
 
+install_software() {
+  package_name="$1"
+  
+  if apt list --installed "$package_name" 2>/dev/null | grep -q "^$package_name/"; then
+    echo "info: $package_name is already installed."
+    return 0
+  fi
+  
+  if "apt -y install" "$package_name" >/dev/null 2>&1; then
+    echo "info: $package_name is installed."
+  else
+    echo "error: Installation of $package_name failed, please check your network."
+    exit 1
+  fi
+}
+
 download_files() {
   local download_count=0
 
@@ -42,6 +58,7 @@ download_files() {
 
   if ((download_count == 5)); then
     echo 'info: files download'
+    chmod 755 "/usr/lib/cups/filter/sv2epjl"
   fi
 
   return 0
@@ -66,6 +83,7 @@ remove_driver() {
 main() { 
 
   check_if_running_as_root || return 1
+  install_software 'curl'
 
   case "$1" in
     "install")
