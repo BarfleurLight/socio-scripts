@@ -22,3 +22,11 @@ Activation and installation of icons for SPSS 27. Start after install program.
 bash -c "$(curl -LsS https://github.com/BarfleurLight/socio-scripts/raw/main/icons-spss27/install.sh)" @ install
 ```
 
+#### Driver KYOSERA MA5500ifx
+
+Install printer driver for Linux
+
+```
+bash -c "$(curl -L https://github.com/BarfleurLight/socio-scripts/raw/main/driver-kyosera-ma5500ifx/install.sh)" @ install
+```
+
