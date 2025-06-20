@@ -40,7 +40,40 @@ select_parameters() {
   esac
 }
 
+install_software() {
+  package_name="$1"
+  
+  if apt list --installed "$package_name" 2>/dev/null | grep -q "^$package_name/"; then
+    echo "info: $package_name is already installed."
+    return 0
+  fi
+  
+  if "apt -y install" "$package_name" >/dev/null 2>&1; then
+    echo "info: $package_name is installed."
+  else
+    echo "error: Installation of $package_name failed, please check your network."
+    exit 1
+  fi
+}
 
+download_and_unzip() {
+  if ! curl -fsS -o "$ZIP_FILE" "$DOWNLOAD_LINK"; then
+    echo 'error: Download failed! Please check your network or try again.'
+    return 1
+  fi
+
+  if ! unzip -q "$ZIP_FILE" -d "$TMP_DIRECTORY"; then
+    echo "error: $TMP_DIRECTORY"
+    return 1
+  fi
+}
+
+install_files() {
+  for src in "${!FILES[@]}"; do
+    arr=(${FILES[$file]})
+    install -Dm "${arr[0]}" "$TMP_DIRECTORY/$src" "${arr[1]}/$src" || return 1
+  done
+}
 
 main() { 
 
