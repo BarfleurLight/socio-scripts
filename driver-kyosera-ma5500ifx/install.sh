@@ -56,6 +56,22 @@ install_software() {
   fi
 }
 
+remove_driver() {
+  delete_files=("$TMP_DIRECTORY")
+
+  for src in "${!FILES[@]}"; do
+    delete_files+=("${FILES[$src]}$src")
+  done
+
+  if ! rm -rf "${delete_files[@]}"; then
+    echo 'error: Files not exist.'
+    exit 1
+  fi
+
+  echo "info: All failes remove"
+  exit 0
+}
+
 download_and_unzip() {
   if ! curl -fsS -o "$ZIP_FILE" "$DOWNLOAD_LINK"; then
     echo 'error: Download failed! Please check your network or try again.'
