@@ -56,7 +56,7 @@ install_software() {
   fi
 }
 
-remove_driver() {
+remove_files() {
   delete_files=("$TMP_DIRECTORY")
 
   for src in "${!FILES[@]}"; do
@@ -86,7 +86,7 @@ download_and_unzip() {
 
 install_files() {
   for src in "${!FILES[@]}"; do
-    arr=(${FILES[$file]})
+    arr=(${FILES[$src]})
     install -Dm "${arr[0]}" "$TMP_DIRECTORY/$src" "${arr[1]}/$src" || return 1
   done
 }
@@ -104,7 +104,7 @@ main() {
   install_files || remove_files
 
   echo "Driver install!"
-  echo "Кeboot the system"
+  echo "Reboot the system"
 }
 
 main "$@"
