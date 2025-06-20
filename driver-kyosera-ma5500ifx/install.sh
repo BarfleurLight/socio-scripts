@@ -9,7 +9,7 @@ declare -A FILES=(
   ["kyofilter_pdf_H"]="755 /usr/lib/cups/filter"
   ["kyofilter_pre_H"]="755 /usr/lib/cups/filter"
   ["kyofilter_ras_H"]="755 /usr/lib/cups/filter"
-  ["Kyocera_ECOSYS_MA5500ifx"]="644 /usr/share/cups/model/"
+  ["Kyocera_ECOSYS_MA5500ifx.ppd"]="644 /usr/share/cups/model/"
 )
 
 curl() {
