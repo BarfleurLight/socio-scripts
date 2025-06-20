@@ -92,7 +92,19 @@ install_files() {
 }
 
 main() { 
+  check_if_running_as_root || return 1
+  select_parameters "$@" || return 1
 
+  install_software 'curl'
+
+  TMP_DIRECTORY="$(mktemp -d)"
+  ZIP_FILE="${TMP_DIRECTORY}/Kyosera_MA5500ifx.zip"
+  
+  download_and_unzip || remove_files
+  install_files || remove_files
+
+  echo "Driver install!"
+  echo "Кeboot the system"
 }
 
 main "$@"
