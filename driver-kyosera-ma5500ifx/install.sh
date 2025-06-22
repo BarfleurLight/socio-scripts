@@ -40,22 +40,6 @@ select_parameters() {
   esac
 }
 
-install_software() {
-  package_name="$1"
-  
-  if apt list --installed "$package_name" 2>/dev/null | grep -q "^$package_name/"; then
-    echo "info: $package_name is already installed."
-    return 0
-  fi
-  
-  if "apt -y install" "$package_name" >/dev/null 2>&1; then
-    echo "info: $package_name is installed."
-  else
-    echo "error: Installation of $package_name failed, please check your network."
-    exit 1
-  fi
-}
-
 remove_files() {
   delete_files=("$TMP_DIRECTORY")
 
@@ -94,8 +78,6 @@ install_files() {
 main() { 
   check_if_running_as_root || return 1
   select_parameters "$@" || return 1
-
-  install_software 'curl'
 
   TMP_DIRECTORY="$(mktemp -d)"
   ZIP_FILE="${TMP_DIRECTORY}/Kyosera_MA5500ifx.zip"
