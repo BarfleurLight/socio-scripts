@@ -100,6 +100,8 @@ main() {
   download_and_unzip || remove_files
   install_files || remove_files
 
+  echo "LC_ALL=en_US.UTF-8" >> /etc/default/locale
+  
   update-mime-database /usr/share/mime ||
   echo "error: Update mime"
  
